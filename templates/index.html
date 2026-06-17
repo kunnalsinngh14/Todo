@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo Management System</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Open Sans', sans-serif;
+    background: #EBF5DF;
+    padding:40px 20px;
+    color: #495057; /* Grey texts */
+    min-height: 100vh;
+}
+
+h1, h2, h3, .todo-title, th, label, .add-btn, .update-btn, .delete-btn, .cancel-btn {
+    font-family: 'Poppins', sans-serif;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+.card{
+    background: #ffffff; /* White todo box */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+    padding: 40px;
+    border-radius: 16px;
+}
+
+h1{
+    text-align:center;
+    color: #343a40;
+    margin-bottom:30px;
+    font-weight:700;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color: #495057; /* Grey texts */
+    font-size: 0.95rem;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:14px;
+    background: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+    transition:all 0.3s ease;
+    color: #495057; /* Grey texts */
+    font-family:'Open Sans', sans-serif;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #adb5bd;
+}
+
+input:focus,
+textarea:focus{
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+textarea{
+    height:80px;
+    min-height:80px;
+    resize:vertical;
+}
+
+.add-btn{
+    background: #0d6efd; /* Blue submit button */
+    color: white;
+    border: none;
+    padding:14px 24px;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+.add-btn:hover{
+    background: #0b5ed7;
+}
+
+.cancel-btn{
+    background: transparent;
+    color: #6c757d;
+    border: 1px solid #ced4da;
+    padding:14px 24px;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    width: 100%;
+    display: block;
+    text-align: center;
+    text-decoration:none;
+}
+
+.cancel-btn:hover{
+    background: #f8f9fa;
+    color: #495057;
+}
+
+.section-title{
+    margin-top:50px;
+    margin-bottom:20px;
+    color: #343a40;
+    text-align:center;
+    font-weight: 600;
+}
+
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing: 0 8px;
+}
+
+thead{
+    display:none;
+}
+
+th{
+    padding:18px;
+    text-align:left;
+    font-size:16px;
+}
+
+td{
+    padding:20px;
+    background: #ffffff; /* White todo box for items */
+    vertical-align:middle;
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    color: #495057; /* Grey texts */
+}
+
+td:first-child{
+    border-left: 1px solid #e9ecef;
+    border-radius: 12px 0 0 12px;
+    width: 5%;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+td:last-child{
+    border-right: 1px solid #e9ecef;
+    border-radius: 0 12px 12px 0;
+    width: 25%;
+    text-align:right;
+}
+
+tbody tr{
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+tbody tr:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.action-buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap: 8px;
+}
+
+.update-btn{
+    background: #0d6efd; /* Blue update button */
+    color: white;
+    text-decoration:none;
+    padding:8px 16px;
+    border-radius:6px;
+    transition:all 0.2s ease;
+    font-weight:500;
+    font-size: 13px;
+    border: none;
+}
+
+.update-btn:hover{
+    background: #0b5ed7;
+}
+
+.delete-btn{
+    background: #dc3545; /* Red delete button */
+    color: white;
+    border: none;
+    text-decoration:none;
+    padding:8px 16px;
+    border-radius:6px;
+    transition:all 0.2s ease;
+    font-weight:500;
+    font-size: 13px;
+}
+
+.delete-btn:hover{
+    background: #bb2d3b;
+}
+
+.no-todos{
+    text-align:center !important;
+    color: #6c757d; /* Grey text */
+    padding:40px !important;
+    font-weight: 500;
+    border: 1px dashed #ced4da !important;
+    border-radius: 8px !important;
+    background: #f8f9fa !important;
+}
+
+.todo-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 4px;
+}
+
+.todo-desc {
+    color: #6c757d; /* Grey text */
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        {% if todo %}
+        <h1>Update Todo</h1>
+
+        <!-- Changed from todo[0].sno to todo.sno -->
+        <form action="/update/{{todo.sno}}" method="POST">
+
+            <div class="form-group">
+                <label for="title">Todo Title</label>
+                <!-- Changed from todo[0].title to todo.title -->
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value="{{todo.title}}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <!-- Changed from todo[0].desc to todo.desc -->
+                <textarea
+                    id="description"
+                    name="desc"
+                    required>{{todo.desc}}</textarea>
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button type="submit" class="add-btn">
+                    Save Changes
+                </button>
+                <a href="/" class="cancel-btn">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+        {% else %}
+        <h1>Todo Management System</h1>
+
+        <form action="/" method="POST">
+
+            <div class="form-group">
+                <label for="title">Todo Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Enter todo title"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="desc"
+                    placeholder="Enter todo description"
+                    required></textarea>
+            </div>
+
+            <button type="submit" class="add-btn">
+                Add Todo
+            </button>
+
+        </form>
+
+        <h2 class="section-title">ToDos</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>SNo.</th>
+                    <th>Todo</th>
+                    <th style="display:none;">Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% if todolist|length == 0 %}
+                <tr>
+                    <td colspan="3" class="no-todos">
+                        No Todos Found
+                    </td>
+                </tr>
+                {% endif %}
+
+                {% for i in todolist %}
+                <tr>
+
+                    <td>{{ loop.index }}</td>
+
+                    <td>
+                        <div class="todo-title">{{ i.title }}</div>
+                        <div class="todo-desc">{{ i.desc }}</div>
+                    </td>
+
+                    <td>
+                        <div class="action-buttons">
+
+                            <a href="/update/{{i.sno}}" class="update-btn">
+                                Update
+                            </a>
+                            <a href="/delete/{{i.sno}}" class="delete-btn">
+                                Delete
+                            </a>
+
+                        </div>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
